@@ -1,9 +1,11 @@
 .App {
   display: grid;
-
+  background-color: white;
+  border-radius: 1rem;
   grid-template-columns: 1fr 2fr;
   place-items: center;
   padding-top: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .light__container {
@@ -30,9 +32,13 @@
   border-radius: 50%;
 }
 
-.table__container {
+.logs {
+  background-color: white;
+  margin: 2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
-
 .loading {
   background: url(./train-svgrepo-com.svg) center center;
   background-size: 100%;

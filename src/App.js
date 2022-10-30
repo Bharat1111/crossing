@@ -32,6 +32,7 @@ function App() {
       <div
         style={{
           padding: "20px",
+          backgroundColor: "#e7e7e7",
         }}
       >
         <div className="App">
@@ -82,8 +83,14 @@ function App() {
           </div>
 
           <div className="table__container">
-            <h1>Recent</h1>
-            <Table striped bordered hover>
+            <h1
+              style={{
+                marginBottom: "1rem",
+              }}
+            >
+              Recent
+            </h1>
+            <Table hover className="rounded">
               <thead>
                 <tr>
                   <th>#</th>
@@ -143,9 +150,15 @@ function App() {
             </Table>
           </div>
         </div>
-        <div>
-          <h1>Logs</h1>
-          <Table striped bordered hover>
+        <div className="logs">
+          <h1
+            style={{
+              marginBottom: "1rem",
+            }}
+          >
+            Logs
+          </h1>
+          <Table hover>
             <thead>
               <tr>
                 <th>#</th>
