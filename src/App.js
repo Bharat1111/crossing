@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import logo from "./train-svgrepo-com.svg";
 import "./App.css";
 import React, { useEffect } from "react";
 import Table from "react-bootstrap/Table";
@@ -23,9 +23,21 @@ function App() {
 
   return (
     <>
-      <Navbar expand="lg" variant="light" bg="light">
+      <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#">Railway Crossing</Navbar.Brand>
+          <Navbar.Brand href="#home">
+            <img
+              alt=""
+              src={logo}
+              style={{
+                marginRight: "10px",
+              }}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />
+            Railway Crosing
+          </Navbar.Brand>
         </Container>
       </Navbar>
 
