@@ -7,62 +7,77 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { useState } from "react";
-import { database } from "./firebase-config";
+import { database, db } from "./firebase-config";
 import Loading from "./Loading";
 import { ref, onValue } from "firebase/database";
 import Data from "./Data";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 function App() {
-    const [open, setOpen] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(true);
+  const [logs, setLogs] = React.useState([]);
+  const dbRef = ref(database);
+  const [data, setData] = useState({});
 
-    const dbRef = ref(database);
-    const [data, setData] = useState({});
-    useEffect(() => {
-        onValue(dbRef, (snapshot) => {
-            // console.log(snapshot.val().Data);
-            setData(snapshot.val().Data);
-        });
-    }, [loading]);
-    console.log("data", data);
-
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 7000);
-    }, []);
-    if (loading) {
-        return <Loading />;
+  console.log(data);
+  const getLogs = async () => {
+    const ref = collection(db, "logs");
+    try {
+      const q = query(ref, orderBy("date"));
+      const res = await getDocs(q);
+      const arr = [];
+      res.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      setLogs(arr);
+      console.log("arr", arr);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
     }
+  };
 
-    return (
-        <>
-            <Navbar bg="dark" variant="dark">
-                <Container>
-                    <Navbar.Brand href="#home">
-                        <img
-                            alt=""
-                            src={logo}
-                            style={{
-                                marginRight: "10px",
-                            }}
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top"
-                        />
-                        Railway Crosing
-                    </Navbar.Brand>
-                </Container>
-            </Navbar>
+  useEffect(() => {
+    // getLogs();
+    onValue(dbRef, (snapshot) => {
+      // console.log(snapshot.val().Data);
+      setData(snapshot.val().Data);
+    });
+  }, []);
+  if (loading) {
+    return <Loading />;
+  }
+  return (
+    <>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">
+            <img
+              alt=""
+              src={logo}
+              style={{
+                marginRight: "10px",
+              }}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />
+            Railway Crosing
+          </Navbar.Brand>
+        </Container>
+      </Navbar>
 
-            <div
-                style={{
-                    padding: "20px",
-                    backgroundColor: "#e7e7e7",
-                }}
-            >
-                <div className="App">
-                    {/* <div
+      <div
+        style={{
+          padding: "20px",
+          backgroundColor: "white",
+          minHeight: "100vh",
+          backgroundColor: "rgb(242, 242, 242)",
+        }}
+      >
+        <div className="App">
+          {/* <div
                         style={{
                             display: "flex",
                             justifyContent: "center",
@@ -70,7 +85,7 @@ function App() {
                             flexDirection: "column",
                         }}
                     > */}
-                    {/* <div
+          {/* <div
                             style={{
                                 gap: "10px",
                                 display: "flex",
@@ -106,125 +121,64 @@ function App() {
                                 }}
                             ></div>
                         </div> */}
-                    {/* </div> */}
+          {/* </div> */}
 
-                    <div className="table__container">
-                        <h1
-                            style={{
-                                marginBottom: "1rem",
-                            }}
-                        >
-                            Recent
-                        </h1>
-                        <Table hover className="rounded ">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Train No.</th>
-                                    <th>Time</th>
-                                    <th>Open</th>
-                                    <th>Username</th>
-                                    <th>Username</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr> */}
-                                <Data data={data} />
-                                {/* <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr> */}
-                                <Data data={data} />
-                                <Data data={data} />
-                                {/* <tr> */}
-                                {/* <td>3</td>
-                                    <td colSpan={2}>Larry the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>@twitter</td>
-                                    <td>@twitter</td>
-                                </tr> */}
-                            </tbody>
-                        </Table>
-                    </div>
-                </div>
-                <div className="logs">
-                    <h1
-                        style={{
-                            marginBottom: "1rem",
-                        }}
-                    >
-                        Logs
-                    </h1>
-                    <Table hover>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Time</th>
-                                <th>Distance</th>
-                                <th>Estimated Time</th>
-                                <th>Barrier Down</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {localStorage.getItem("logs") &&
-                                (console.log(
-                                    "logs",
-                                    localStorage.getItem("logs")
-                                ),
-                                JSON.parse(localStorage.getItem("logs")).map(
-                                    (item, index) => {
-                                        return (
-                                            <tr>
-                                                <td>{index + 1}</td>
-                                                <td>{item.Time}</td>
-                                                <td>5 km</td>
-                                                <td>
-                                                    {parseFloat(
-                                                        (5 / 55) * 60
-                                                    ).toFixed(2)}{" "}
-                                                    mins
-                                                </td>
-                                                <td>
-                                                    <div className="open">
-                                                        <div
-                                                            style={{
-                                                                backgroundColor:
-                                                                    item.Open
-                                                                        ? "black"
-                                                                        : "red",
-                                                            }}
-                                                        ></div>
-                                                        <div
-                                                            style={{
-                                                                backgroundColor:
-                                                                    item.Open
-                                                                        ? "green"
-                                                                        : "black",
-                                                            }}
-                                                        ></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        );
-                                    }
-                                ))}
-                        </tbody>
-                    </Table>
-                </div>
-            </div>
-        </>
-    );
+          <div className="table__container">
+            <h1
+              style={{
+                marginBottom: "1rem",
+              }}
+            >
+              Recent
+            </h1>
+            <Table hover className="rounded ">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Time</th>
+                  <th>Distance</th>
+                  <th>Estimated Time</th>
+                  <th>Barrier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <Data data={data} />
+              </tbody>
+            </Table>
+          </div>
+        </div>
+        <div className="logs">
+          <h1
+            style={{
+              marginBottom: "1rem",
+            }}
+          >
+            Logs
+          </h1>
+          <Table hover>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {logs?.map((log, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{log?.date?.toDate().toLocaleString()}</td>
+                    <td>{log?.time}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default App;
