@@ -14,70 +14,72 @@ import Data from "./Data";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 function App() {
-  const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = useState(true);
-  const [logs, setLogs] = React.useState([]);
-  const dbRef = ref(database);
-  const [data, setData] = useState({});
+    const [open, setOpen] = React.useState(false);
+    const [loading, setLoading] = useState(true);
+    const [logs, setLogs] = React.useState([]);
+    const dbRef = ref(database);
+    const [data, setData] = useState({});
 
-  console.log(data);
-  const getLogs = async () => {
-    const ref = collection(db, "logs");
-    try {
-      const q = query(ref, orderBy("date"));
-      const res = await getDocs(q);
-      const arr = [];
-      res.forEach((doc) => {
-        arr.push(doc.data());
-      });
-      setLogs(arr);
-      console.log("arr", arr);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
+    console.log(data);
+    const getLogs = async () => {
+        const ref = collection(db, "logs");
+        try {
+            const q = query(ref, orderBy("date"));
+            const res = await getDocs(q);
+            const arr = [];
+            res.forEach((doc) => {
+                arr.push(doc.data());
+            });
+            setLogs(arr);
+            console.log("arr", arr);
+            setLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        onValue(dbRef, (snapshot) => {
+            // console.log(snapshot.val().Data);
+            setData(snapshot.val().Data);
+        });
+    }, []);
+    useEffect(() => {
+        getLogs();
+    }, []);
+    if (loading) {
+        return <Loading />;
     }
-  };
+    return (
+        <>
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                    <Navbar.Brand href="#home">
+                        <img
+                            alt=""
+                            src={logo}
+                            style={{
+                                marginRight: "10px",
+                            }}
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top"
+                        />
+                        Railway Crosing
+                    </Navbar.Brand>
+                </Container>
+            </Navbar>
 
-  useEffect(() => {
-    // getLogs();
-    onValue(dbRef, (snapshot) => {
-      // console.log(snapshot.val().Data);
-      setData(snapshot.val().Data);
-    });
-  }, []);
-  if (loading) {
-    return <Loading />;
-  }
-  return (
-    <>
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">
-            <img
-              alt=""
-              src={logo}
-              style={{
-                marginRight: "10px",
-              }}
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-            />
-            Railway Crosing
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
-
-      <div
-        style={{
-          padding: "20px",
-          backgroundColor: "white",
-          minHeight: "100vh",
-          backgroundColor: "rgb(242, 242, 242)",
-        }}
-      >
-        <div className="App">
-          {/* <div
+            <div
+                style={{
+                    padding: "20px",
+                    backgroundColor: "white",
+                    minHeight: "100vh",
+                    backgroundColor: "rgb(242, 242, 242)",
+                }}
+            >
+                <div className="App">
+                    {/* <div
                         style={{
                             display: "flex",
                             justifyContent: "center",
@@ -85,7 +87,7 @@ function App() {
                             flexDirection: "column",
                         }}
                     > */}
-          {/* <div
+                    {/* <div
                             style={{
                                 gap: "10px",
                                 display: "flex",
@@ -121,64 +123,74 @@ function App() {
                                 }}
                             ></div>
                         </div> */}
-          {/* </div> */}
+                    {/* </div> */}
 
-          <div className="table__container">
-            <h1
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
-              Recent
-            </h1>
-            <Table hover className="rounded ">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Time</th>
-                  <th>Distance</th>
-                  <th>Estimated Time</th>
-                  <th>Barrier</th>
-                </tr>
-              </thead>
-              <tbody>
-                <Data data={data} />
-              </tbody>
-            </Table>
-          </div>
-        </div>
-        <div className="logs">
-          <h1
-            style={{
-              marginBottom: "1rem",
-            }}
-          >
-            Logs
-          </h1>
-          <Table hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Date</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {logs?.map((log, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{log?.date?.toDate().toLocaleString()}</td>
-                    <td>{log?.time}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </div>
-      </div>
-    </>
-  );
+                    <div className="table__container">
+                        {!data.Barrier_Down ? (
+                            <>
+                                <h1
+                                    style={{
+                                        marginBottom: "1rem",
+                                    }}
+                                >
+                                    Recent
+                                </h1>
+                                <Table hover className="rounded ">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Time</th>
+                                            <th>Distance</th>
+                                            <th>Estimated Time</th>
+                                            <th>Barrier</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <Data data={data} />
+                                    </tbody>
+                                </Table>
+                            </>
+                        ) : (
+                            <p>Barrier is up, you can pass safely.</p>
+                        )}
+                    </div>
+                </div>
+                <div className="logs">
+                    <h1
+                        style={{
+                            marginBottom: "1rem",
+                        }}
+                    >
+                        Logs
+                    </h1>
+                    <Table hover>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {logs?.map((log, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>
+                                            {log?.date
+                                                ?.toDate()
+                                                .toLocaleString()}
+                                        </td>
+                                        <td>{log?.time}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default App;
