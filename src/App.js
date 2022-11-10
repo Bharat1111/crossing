@@ -126,7 +126,7 @@ function App() {
                     {/* </div> */}
 
                     <div className="table__container">
-                        {!data.Barrier_Down ? (
+                        {data.Barrier_Down ? (
                             <>
                                 <h1
                                     style={{
