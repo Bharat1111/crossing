@@ -1,86 +1,131 @@
 .App {
-  display: grid;
-  background-color: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  margin: 2rem 2rem;
-  padding-top: 2rem;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    display: grid;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 2rem 2rem;
+    padding-top: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .open {
-  display: grid;
-  grid-template-columns: 30px 30px;
-  border-radius: 1rem;
-  /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5); */
+    display: grid;
+    grid-template-columns: 30px 30px;
+    border-radius: 1rem;
+    /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5); */
 }
 .open > div:nth-child(1) {
-  height: 1rem;
-  width: 1rem;
-  transition: all 0.5s ease;
-  border-radius: 50%;
+    height: 1rem;
+    width: 1rem;
+    transition: all 0.5s ease;
+    border-radius: 50%;
 }
 
 .open > div:nth-child(2) {
-  height: 1rem;
-  width: 1rem;
-  transition: all 0.5s ease;
-  border-radius: 50%;
+    height: 1rem;
+    width: 1rem;
+    transition: all 0.5s ease;
+    border-radius: 50%;
 }
 
 .light__container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  padding: 1rem 2rem;
-  border-radius: 1rem;
-  background: black;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    background: black;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .light__container > div:nth-child(1) {
-  height: 1rem;
-  width: 1rem;
+    height: 1rem;
+    width: 1rem;
 
-  transition: all 0.5s ease;
-  border-radius: 50%;
+    transition: all 0.5s ease;
+    border-radius: 50%;
 }
 
 .light__container > div:nth-child(2) {
-  height: 1rem;
-  width: 1rem;
-  transition: all 0.5s ease;
+    height: 1rem;
+    width: 1rem;
+    transition: all 0.5s ease;
 
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
 .logs {
-  background-color: white;
-  margin: 2rem 0;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    background-color: white;
+    margin: 2rem 0;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .loading {
-  background: url(./train-svgrepo-com.svg) center center;
-  background-size: 20%;
-  padding: 4rem;
-  background-repeat: no-repeat;
-  animation: loading 6s infinite ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+    background: url(./train-svgrepo-com.svg) center center;
+    background-size: 20%;
+    padding: 4rem;
+    background-repeat: no-repeat;
+    animation: loading 6s infinite ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.switch-slide {
+    padding: 0;
+    margin: 15px 0 0;
+    background: #fff;
+    border-radius: 0;
+    background-image: none;
+}
+.switch-slide .switch-label {
+    box-shadow: none;
+    background: none;
+    overflow: hidden;
+}
+.switch-slide .switch-label:after,
+.switch-slide .switch-label:before {
+    width: 100%;
+    height: 65%;
+    top: 5px;
+    left: 0;
+    text-align: center;
+    padding-top: 10%;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2),
+        inset 0 0 3px rgba(0, 0, 0, 0.1);
+}
+.switch-slide .switch-label:after {
+    color: #ffffff;
+    background: #87ceeb;
+    left: -100px;
+}
+.switch-slide .switch-label:before {
+    background: #eceeef;
+}
+.switch-slide .switch-handle {
+    display: none;
+}
+.switch-slide .switch-input:checked ~ .switch-label {
+    background: #fff;
+    border-color: #0088cc;
+}
+.switch-slide .switch-input:checked ~ .switch-label:before {
+    left: 100px;
+}
+.switch-slide .switch-input:checked ~ .switch-label:after {
+    left: 0;
 }
 
 @keyframes loading {
-  0% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+    0% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }

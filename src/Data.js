@@ -1,18 +1,24 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { database, db } from "./firebase-config";
+
+import { db } from "./firebase-config";
 const Data = ({ data }) => {
+    const [estimate, setEstimate] = useState(0);
     const [color, setColor] = useState("green");
     const saveDataHandler = async () => {
+        console.log("save");
         const ref = collection(db, "logs");
         const res = await addDoc(ref, {
             date: serverTimestamp(),
             time: data.Time,
+            estimate: estimate,
         });
         console.log("res", res);
     };
 
+    useEffect(() => {
+        setEstimate(parseFloat(data.Distance / 60).toFixed(2));
+    }, []);
     useEffect(() => {
         if (data.Distance < 4) {
             setColor("red");
