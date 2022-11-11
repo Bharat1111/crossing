@@ -20,12 +20,12 @@ const Data = ({ data }) => {
         setEstimate(parseFloat(data.Distance / 60).toFixed(2));
     }, []);
     useEffect(() => {
-        if (data.Distance < 4) {
+        if (data.Distance < 7) {
             setColor("red");
         } else {
             setColor("green");
         }
-        if (data.Distance <= 4) {
+        if (data.Distance <= 2) {
             saveDataHandler();
             console.log("kdhsfuik");
         }

@@ -13,6 +13,7 @@ import logo from "./train-svgrepo-com.svg";
 import "./App.css";
 
 function App() {
+    const [manual, setManual] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = useState(true);
     const [logs, setLogs] = React.useState([]);
@@ -40,28 +41,32 @@ function App() {
     };
 
     const changeManual = () => {
-        console.log("change", dbRef);
         onValue(dbRef, (snapshot) => {
-            // console.log(snapshot.val().Data);
-            setsendData(snapshot.val());
+            setsendData(snapshot.val().sendData);
         });
-        // console.log("changed", "senddata", senddata);
-        // set(dbRef, { sendData: { Manual: !data.Manual } });
-        // update(ref(database, "sendData"), {
-        //     Manual: !data.Manual,
-        // });
         try {
-            // update(dbRef, !data.Manual);
-            // update(dbRef, { ...senddata, senddata.sendData.Manual: !data.Manual });
             set(senddbRef, {
-                // Open: senddata.sendData.Open,
-                ...senddata,
-                Manual: !senddata.sendData.Manual,
+                Open: senddata.Open,
+                Manual: !senddata.Manual,
             });
+            setManual((prev) => !prev);
+            console.log("changed", "senddata", senddata, manual);
         } catch (err) {
             console.log(err);
         }
-        console.log("changed", senddata.sendData.Manual);
+    };
+
+    const changeOpen = () => {
+        try {
+            set(senddbRef, {
+                Open: !senddata.Open,
+                Manual: senddata.Manual,
+            });
+            setOpen((prev) => !prev);
+            console.log("changed", "senddata", senddata, open);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     useEffect(() => {
@@ -93,15 +98,6 @@ function App() {
                         />
                         Railway Crosing
                     </Navbar.Brand>
-                    {/* <label class="switch switch-slide">
-                        <input class="switch-input" type="checkbox" />
-                        <span
-                            class="switch-label"
-                            data-on="Yes"
-                            data-off="No"
-                        ></span>
-                        <span class="switch-handle"></span>
-                    </label> */}
                 </Container>
             </Navbar>
 
@@ -113,7 +109,8 @@ function App() {
                     backgroundColor: "rgb(242, 242, 242)",
                 }}
             >
-                {/* <button onClick={() => changeManual(!open)}>Open</button> */}
+                {/* <button onClick={() => changeManual(!open)}>Manual</button>
+                {manual && <button onClick={() => changeOpen()}>Open</button>} */}
                 <div className="App">
                     <div className="table__container">
                         {data?.Barrier_Down ? (
@@ -145,46 +142,48 @@ function App() {
                         )}
                     </div>
                 </div>
-                {logs ? (
-                    <div className="logs">
-                        <h1
-                            style={{
-                                marginBottom: "1rem",
-                            }}
-                        >
-                            Logs
-                        </h1>
-                        <Table hover>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {logs?.map((log, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>
-                                                {
-                                                    log?.date
-                                                        ?.toDate()
-                                                        .toLocaleString()
-                                                        .split(",")[0]
-                                                }
-                                            </td>
-                                            <td>{log?.time}</td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </Table>
-                    </div>
-                ) : (
-                    <h4>No logs found</h4>
-                )}
+                <div className="logs">
+                    {logs.length > 0 ? (
+                        <>
+                            <h1
+                                style={{
+                                    marginBottom: "1rem",
+                                }}
+                            >
+                                Logs
+                            </h1>
+                            <Table hover>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {logs?.map((log, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>
+                                                    {
+                                                        log?.date
+                                                            ?.toDate()
+                                                            .toLocaleString()
+                                                            .split(",")[0]
+                                                    }
+                                                </td>
+                                                <td>{log?.time}</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </Table>
+                        </>
+                    ) : (
+                        <h4>No logs found</h4>
+                    )}
+                </div>
             </div>
         </>
     );
