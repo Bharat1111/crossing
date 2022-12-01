@@ -109,8 +109,8 @@ function App() {
                     backgroundColor: "rgb(242, 242, 242)",
                 }}
             >
-                {/* <button onClick={() => changeManual(!open)}>Manual</button>
-                {manual && <button onClick={() => changeOpen()}>Open</button>} */}
+                <button onClick={() => changeManual(!open)}>Manual</button>
+                {manual && <button onClick={() => changeOpen()}>Open</button>}
                 <div className="App">
                     <div className="table__container">
                         {data?.Barrier_Down ? (
