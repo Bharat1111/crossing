@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
+import Switch from "react-switch";
 import { ref, onValue, update, set } from "firebase/database";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
@@ -13,16 +14,16 @@ import logo from "./train-svgrepo-com.svg";
 import "./App.css";
 
 function App() {
-    const [manual, setManual] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
+    const [manual, setManual] = useState(false);
+    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [logs, setLogs] = React.useState([]);
+    const [logs, setLogs] = useState([]);
     const [data, setData] = useState({});
     const [senddata, setsendData] = useState({});
     const dbRef = ref(database);
-    const senddbRef = ref(database, "sendData/");
+    const senddbRef = ref(database, "getData/");
 
-    console.log(data);
+    // console.log(data);
     const getLogs = async () => {
         const ref = collection(db, "logs");
         try {
@@ -33,7 +34,7 @@ function App() {
                 arr.push(doc.data());
             });
             setLogs(arr);
-            console.log("arr", arr);
+            // console.log("arr", arr);
             setLoading(false);
         } catch (err) {
             console.log(err);
@@ -42,15 +43,17 @@ function App() {
 
     const changeManual = () => {
         onValue(dbRef, (snapshot) => {
-            setsendData(snapshot.val().sendData);
+            setsendData(snapshot.val().getData);
         });
+        // console.log("senddata", senddata);
         try {
             set(senddbRef, {
                 Open: senddata.Open,
                 Manual: !senddata.Manual,
             });
-            setManual((prev) => !prev);
-            console.log("changed", "senddata", senddata, manual);
+            setManual(!senddata.Manual);
+            setOpen(senddata.Open);
+            // console.log("changed", "senddata", senddata, manual, open);
         } catch (err) {
             console.log(err);
         }
@@ -62,8 +65,8 @@ function App() {
                 Open: !senddata.Open,
                 Manual: senddata.Manual,
             });
-            setOpen((prev) => !prev);
-            console.log("changed", "senddata", senddata, open);
+            setOpen(!senddata.Open);
+            // console.log("changed", "senddata", senddata, open);
         } catch (err) {
             console.log(err);
         }
@@ -109,8 +112,6 @@ function App() {
                     backgroundColor: "rgb(242, 242, 242)",
                 }}
             >
-                {/* <button onClick={() => changeManual(!open)}>Manual</button>
-                {manual && <button onClick={() => changeOpen()}>Open</button>} */}
                 <div className="App">
                     <div className="table__container">
                         {data?.Barrier_Down ? (
@@ -184,6 +185,16 @@ function App() {
                         <h4>No logs found</h4>
                     )}
                 </div>
+                Manual{" "}
+                <Switch onChange={changeManual} checked={senddata.Manual} />
+                {manual && (
+                    <>
+                        <br />
+                        Open{" "}
+                        <Switch onChange={changeOpen} checked={senddata.Open} />
+                    </>
+                )}
+                {console.log("manual", manual, open)}
             </div>
         </>
     );

@@ -27,7 +27,7 @@ const Data = ({ data }) => {
         }
         if (data.Distance <= 2) {
             saveDataHandler();
-            console.log("kdhsfuik");
+            console.log("saved");
         }
     }, [data.Distance]);
 
@@ -41,14 +41,14 @@ const Data = ({ data }) => {
                         color: color,
                     }}
                 >
-                    {data.Distance < 4 ? 0 : data.Distance} cms
+                    {data.Distance < 2 ? 0 : data.Distance} cms
                 </td>
                 <td
                     style={{
                         color: color,
                     }}
                 >
-                    {data.Distance < 4
+                    {data.Distance < 2
                         ? 0
                         : parseFloat(data.Distance / 60).toFixed(2)}{" "}
                     secs
