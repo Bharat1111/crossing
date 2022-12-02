@@ -114,7 +114,7 @@ function App() {
             >
                 <div className="App">
                     <div className="table__container">
-                        {data?.Barrier_Down ? (
+                        {data?.Barrier_Down && data.Distance > 0 ? (
                             <>
                                 <h1
                                     style={{
