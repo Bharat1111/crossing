@@ -88,7 +88,7 @@
     transition: all 0.2s;
 }
 .btn:hover {
-    background-color: #4095c6;
+    background-color: #212529; /*4095c6*/
     color: rgb(242, 242, 242);
 }
 @media all and (max-width: 30em) {
