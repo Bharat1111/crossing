@@ -20,11 +20,11 @@ const Admin = ({ manual, open, changeManual, changeOpen, senddata }) => {
                 backgroundColor: "rgb(242, 242, 242)",
             }}
         >
-            <div className="App">
+            {/* <div className="App">
                 <p style={{ color: "green" }}>
-                    All components are working, there are no defects found.{" "}
+                    All sensors are working, there are no defects found.{" "}
                 </p>
-            </div>
+            </div> */}
             <div
                 className="logs"
                 style={{

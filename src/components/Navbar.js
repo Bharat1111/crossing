@@ -20,7 +20,7 @@ const Navbar1 = () => {
                         height="30"
                         className="d-inline-block align-top"
                     />
-                    Railway Crosing
+                    Railway Crossing
                 </Navbar.Brand>
             </Container>
         </Navbar>
